@@ -32,27 +32,23 @@ def postfix_to_infix(exp)
   puts "signs #{signs}"
   puts "numbers #{numbers}"
   return "Number of signs should be 1 less than the number of numbers, please type a valid postfix expression" if number_of_signs != number_of_numbers-1
-  result =[]
   k = 0
   while k < signs.length do
     l = signs[k]
     puts "while K:#{k} & L:#{l}"
     puts "data #{data}"
-    result << "#{data[l-2]} #{data[l]} #{data[l-1]}" if k >= 0
+    data[l-2] = "#{data[l-2]} #{data[l]} #{data[l-1]}"
     if  l < data.length - 1 && (["+","-"].include?(data[l]) && ["*","/"].include?(data[signs[k+1] - 2*k]) || ["+","-"].include?(data[l]) && ["+","-"].include?(data[signs[k+1] - 2*k]) && ["*","/"].include?(data[signs[k+2]-2*k]))
-      result[-1] = "(" + result[-1] + ")"
+      data[l-2] = "(" + data[l-2] + ")"
     end
-    puts "result #{result}"
     puts "data le7ad l-2 #{data[0...l-2]}"
     puts "data men l+1 #{data[l+1...-1]}"
     puts l
-    temp =  data[0...l-2] << result[-1]
-    data = temp + data[l+1..-1] if l < data.length - 1
+    data =  data[0..l-2] + data[l+1..-1] if l < data.length - 1
     k += 1
     signs[k] = signs[k] - 2 * k if k < signs.length
     puts "data: #{data}"
-    puts "result: #{result}"
     puts "signs: #{signs} "
   end
-  result[-1]
+  data[l-2]
 end
