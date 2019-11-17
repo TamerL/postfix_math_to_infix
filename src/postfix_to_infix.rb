@@ -4,51 +4,38 @@ def postfix_to_infix(exp)
   if exp == nil || !!(exp =~ /[A-Za-z]/) || exp == ""
     return "please type a valid postfix expression"
   end
-  puts exp
   data = exp.split(' ')
   number_of_signs = 0
   number_of_numbers = 0
-  puts data
   i = 0
-  signs=[]
+  indexes_of_signs=[]
   numbers=[]
   while i < data.length do
     if !!(data[i] =~ /^\d{1,9}\.{0,1}\d{0,9}$/) #this is a num
       number_of_numbers += 1
-      puts "number_of_numbers #{number_of_numbers}"
-      puts "#{data[i]}"
       numbers << i
-    elsif SIGNS.include?(data[i]) # this is a SIGNS
+    elsif SIGNS.include?(data[i]) # this is a indexes_of_signs
       number_of_signs += 1
-      signs << i
-      puts "number_of_signs #{number_of_signs}"
+      indexes_of_signs << i
     else
       "Error: please type a valid postfix expression"
     end
     i += 1
   end
-  puts "number_of_numbers #{number_of_numbers}"
-  puts "number_of_signs #{number_of_signs}"
-  puts "signs #{signs}"
-  puts "numbers #{numbers}"
   return "Number of signs should be 1 less than the number of numbers, please type a valid postfix expression" if number_of_signs != number_of_numbers-1
   k = 0
-  while k < signs.length do
-    l = signs[k]
-    puts "while K:#{k} & L:#{l}"
-    puts "data #{data}"
-    data[l-2] = "#{data[l-2]} #{data[l]} #{data[l-1]}"
-    if  l < data.length - 1 && (["+","-"].include?(data[l]) && ["*","/"].include?(data[signs[k+1] - 2*k]) || ["+","-"].include?(data[l]) && ["+","-"].include?(data[signs[k+1] - 2*k]) && ["*","/"].include?(data[signs[k+2]-2*k]))
-      data[l-2] = "(" + data[l-2] + ")"
+  signs=[]
+  while k < indexes_of_signs.length do
+    l = indexes_of_signs[k]
+    if k > 0 && ["*","/"].include?(data[l]) && ["+","-"].include?(signs[k-1])
+      data[l-2] = "(" + data[l-2] + ")" if ["+","-"].include?data[l-2].split(' ')[1]
+      data[l-1] = "(" + data[l-1] + ")" if ["+","-"].include?data[l-1].split(' ')[1]
     end
-    puts "data le7ad l-2 #{data[0...l-2]}"
-    puts "data men l+1 #{data[l+1...-1]}"
-    puts l
+    signs << data[l]
+    data[l-2] = "#{data[l-2]} #{data[l]} #{data[l-1]}"
     data =  data[0..l-2] + data[l+1..-1] if l < data.length - 1
     k += 1
-    signs[k] = signs[k] - 2 * k if k < signs.length
-    puts "data: #{data}"
-    puts "signs: #{signs} "
+    indexes_of_signs[k] = indexes_of_signs[k] - 2 * k if k < indexes_of_signs.length
   end
   data[l-2]
 end

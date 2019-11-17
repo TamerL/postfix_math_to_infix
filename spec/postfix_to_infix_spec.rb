@@ -29,7 +29,7 @@ describe 'postfix_to_infix' do
     end
     it "returns the answer 5 / (2 + 4 - 3) * (6 - 5) * 3 for the expression 5 4 3 - 2 + / 6 5 - * 3 *" do
       result = postfix_to_infix(" 5 4 3 - 2 + / 6 5 - * 3 *")
-      expect(result).to eq("5 / ((4 - 3) + 2) * (6 - 5) * 3")
+      expect(result).to eq("5 / (4 - 3 + 2) * (6 - 5) * 3")
     end
   end
 
